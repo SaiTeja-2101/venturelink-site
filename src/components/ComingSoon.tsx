@@ -35,7 +35,7 @@ export function ComingSoon() {
       };
 
   return (
-    <main className="relative flex min-h-[100svh] flex-col items-center justify-between overflow-hidden px-5 py-10 sm:py-14">
+    <main className="relative flex min-h-[100svh] flex-col items-center justify-between gap-y-14 px-5 py-10 sm:gap-y-20 sm:py-14">
       <Background />
 
       {/* Top: brand lockup */}
