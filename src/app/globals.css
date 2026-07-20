@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/*
+  VentureLink coming-soon design tokens. This page inverts the marketing site:
+  a deep-navy canvas with blue depth and trace gold accents.
+*/
+@theme {
+  /* Typefaces (wired to next/font variables in layout.tsx) */
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-dm-sans);
+  --font-serif: var(--font-instrument-serif);
+
+  /* Blue system */
+  --color-navy-950: #071d32;
+  --color-navy-900: #0b2c49;
+  --color-blue-800: #0d416a;
+  --color-blue-700: #14517b;
+  --color-blue-500: #2c78a7;
+  --color-blue-200: #bfd7e6;
+  --color-blue-100: #e1edf4;
+
+  /* Gold traces */
+  --color-gold-700: #9a6a14;
+  --color-gold-500: #d2a238;
+  --color-gold-300: #e8cc7a;
+
+  /* Text on the dark canvas */
+  --color-text-on-dark: #edf2fa;
+  --color-text-muted-dark: #9fb2cf;
+
+  /* Motion */
+  --animate-aurora: aurora 26s ease-in-out infinite;
+  --animate-aurora-slow: aurora-slow 34s ease-in-out infinite;
+  --animate-glow: glow 6s ease-in-out infinite;
+  --animate-float: float 9s ease-in-out infinite;
+}
+
+@keyframes aurora {
+  0%,
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(6%, 5%, 0) scale(1.15);
+    opacity: 0.8;
+  }
+}
+
+@keyframes aurora-slow {
+  0%,
+  100% {
+    transform: translate3d(5%, 3%, 0) scale(1.1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(-5%, -5%, 0) scale(1);
+    opacity: 0.7;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 0.35;
+    filter: blur(38px);
+  }
+  50% {
+    opacity: 0.6;
+    filter: blur(52px);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-navy-950);
+  color: var(--color-text-on-dark);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Tabular, fixed-width digits so the countdown never reflows as numbers change */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+:where(a, button, [role="button"]):focus-visible {
+  outline: 2px solid var(--color-gold-500);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
