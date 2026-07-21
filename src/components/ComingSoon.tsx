@@ -5,15 +5,10 @@ import { motion, useReducedMotion } from "motion/react";
 import { Background } from "@/components/Background";
 import { Countdown } from "@/components/Countdown";
 import { ContactRow } from "@/components/ContactRow";
-import { useNow } from "@/lib/useNow";
-import { BRAND, COPY, DISCLAIMER, LAUNCH_AT } from "@/config/site";
-
-const TARGET = LAUNCH_AT.getTime();
+import { BRAND, COPY, DISCLAIMER } from "@/config/site";
 
 export function ComingSoon() {
   const reduce = useReducedMotion();
-  const now = useNow();
-  const launched = now !== null && now >= TARGET;
 
   // Entrance: staggered rise. Disabled under reduced-motion.
   const container = {
@@ -81,35 +76,29 @@ export function ComingSoon() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-500/70" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-gold-500" />
           </span>
-          {launched ? "Now open" : "Launching soon"}
+          Launching soon
         </motion.p>
 
         <motion.h1
           variants={item}
           className="font-display text-4xl font-semibold leading-[1.08] tracking-[-0.02em] text-text-on-dark sm:text-6xl md:text-7xl"
         >
-          {launched ? (
-            COPY.liveHeadline
-          ) : (
-            <>
-              {COPY.headlineLead}{" "}
-              <span className="font-serif font-normal italic text-gold-300">
-                {COPY.headlineAccent}
-              </span>{" "}
-              {COPY.headlineTail}
-            </>
-          )}
+          {COPY.headlineLead}{" "}
+          <span className="font-serif font-normal italic text-gold-300">
+            {COPY.headlineAccent}
+          </span>{" "}
+          {COPY.headlineTail}
         </motion.h1>
 
         <motion.p
           variants={item}
           className="mt-6 max-w-xl font-body text-base leading-relaxed text-text-muted-dark sm:text-lg"
         >
-          {launched ? COPY.liveSub : COPY.sub}
+          {COPY.sub}
         </motion.p>
 
         <motion.div variants={item} className="mt-12 sm:mt-14">
-          <Countdown target={TARGET} />
+          <Countdown />
         </motion.div>
       </motion.div>
 

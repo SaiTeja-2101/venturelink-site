@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/cn";
 import { useNow } from "@/lib/useNow";
+import { nextDailyTarget } from "@/config/site";
 
 type Remaining = { hours: number; minutes: number; seconds: number };
 
@@ -75,11 +76,15 @@ function Separator() {
   );
 }
 
-export function Countdown({ target }: { target: number }) {
+export function Countdown() {
   const now = useNow();
   // Until the client clock is live, render a stable all-zero placeholder that
-  // matches the server HTML (see useNow).
-  const r = now === null ? { hours: 0, minutes: 0, seconds: 0 } : remainingFrom(target, now);
+  // matches the server HTML (see useNow). The target is recomputed every tick,
+  // so when the clock reaches zero it rolls over to the next day automatically.
+  const r =
+    now === null
+      ? { hours: 0, minutes: 0, seconds: 0 }
+      : remainingFrom(nextDailyTarget(now), now);
 
   return (
     <div

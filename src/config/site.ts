@@ -4,16 +4,41 @@
  */
 
 /**
- * The launch instant the countdown targets.
+ * The countdown is a ROLLING 24-hour clock: it always counts down to the next
+ * occurrence of this wall-clock time, and the instant it hits 00:00:00 it rolls
+ * over to the following day's target — a fresh 24 hours, forever.
  *
- * Written as a fixed ISO string WITH an explicit timezone offset so every
- * visitor (and the server) resolves the exact same moment — it is not
- * recomputed relative to "now". `+05:30` is India Standard Time.
- *
- * Default: 2026-07-21 11:00 IST — i.e. 24 hours after 2026-07-20 11:00 IST.
- * To move the launch, change ONLY this line.
+ * Anchored to India Standard Time (UTC+05:30, no DST) so every visitor sees the
+ * same target regardless of their own timezone. Change these two numbers to
+ * move the daily reset time.
  */
-export const LAUNCH_AT = new Date("2026-07-21T11:00:00+05:30");
+export const RESET_HOUR_IST = 11; // 11:00 AM India time
+export const RESET_MINUTE_IST = 0;
+
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Given the current epoch time, returns the epoch time of the next daily reset
+ * (today's if it hasn't passed, otherwise tomorrow's). Recomputed every tick, so
+ * when `now` crosses the target the countdown automatically jumps back to ~24h.
+ */
+export function nextDailyTarget(now: number): number {
+  // Read the IST wall-clock date for `now`, build that day's reset instant in
+  // IST, then convert back to a real UTC epoch.
+  const ist = new Date(now + IST_OFFSET_MS);
+  const istMidnightReset = Date.UTC(
+    ist.getUTCFullYear(),
+    ist.getUTCMonth(),
+    ist.getUTCDate(),
+    RESET_HOUR_IST,
+    RESET_MINUTE_IST,
+    0,
+    0,
+  );
+  const target = istMidnightReset - IST_OFFSET_MS;
+  return now < target ? target : target + DAY_MS;
+}
 
 export const BRAND = {
   name: "VENTURELINK",
@@ -25,9 +50,7 @@ export const COPY = {
   headlineLead: "Something",
   headlineAccent: "exceptional",
   headlineTail: "is almost here.",
-  sub: "We're putting the finishing touches on a smarter way to fund and grow your business. The doors open in exactly 24 hours.",
-  liveHeadline: "We're live.",
-  liveSub: "VentureLink Advisory is now open. Reach out and let's get started.",
+  sub: "We're putting the finishing touches on a smarter way to fund and grow your business. Launching very soon.",
 } as const;
 
 /**
